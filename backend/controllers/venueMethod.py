@@ -126,25 +126,25 @@ def update_venue(venue_id):
             500,
         )
 
-# # Remove a venue
-# def remove_venue(venue_id):
-#     try:
-#         # Find the venue by its ID in the database
-#         venue = Venue.find_one({'_id': ObjectId(venue_id)})
+# Remove a venue
+def remove_venue(venue_id):
+    try:
+        # Find the venue by its ID in the database
+        venue = Venue.find_one({'_id': ObjectId(venue_id)})
 
-#         if not venue:
-#             return jsonify({'error': 'Venue not found'}), 404
+        if not venue:
+            return jsonify({'error': 'Venue not found'}), 404
 
-#         # Remove the venue from the database
-#         Venue.delete_one({'_id': ObjectId(venue_id)})
+        # Remove the venue from the database
+        Venue.delete_one({'_id': ObjectId(venue_id)})
 
-#         return jsonify({"OK": True, "message": "Venue removed successfully"}), 200
+        return jsonify({"OK": True, "message": "Venue removed successfully"}), 200
 
-#     except Exception as e:
-#         return (
-#             jsonify({"error": "An unexpected error occurred", "details": str(e)}),
-#             500,
-#         )
+    except Exception as e:
+        return (
+            jsonify({"error": "An unexpected error occurred", "details": str(e)}),
+            500,
+        )
 
 # # Get venue
 # def get_venues_by_provider():
