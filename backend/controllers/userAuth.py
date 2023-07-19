@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from models.model import User
+from models.model import User, VenueProvider
 from pymongo.errors import DuplicateKeyError
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -31,6 +31,8 @@ def signup():
 
         hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
+        collection = User
+
         user_data = {
             "first_name": first_name,
             "last_name": last_name,
@@ -38,12 +40,25 @@ def signup():
             "password": hashed_password,
         }
 
+        # checking whether the request is from venue provider
+        request_url = request.url
+        if 'venue/provider/signup' in request_url:
+            user_data = {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "password": hashed_password,
+                "verified": False
+            }
+            collection = VenueProvider
+
+
         # Check if the email already exists
-        if User.find_one({"email": email}):
+        if collection.find_one({"email": email}):
             return jsonify({"error": "Email already registered"}), 409
 
         # Insert the new user into the database
-        user_id = User.insert_one(user_data).inserted_id
+        user_id = collection.insert_one(user_data).inserted_id
 
         return (
             jsonify(
@@ -74,8 +89,14 @@ def login():
         if not email or not password:
             return jsonify({"error": "Email and password are required"}), 400
 
+        # checking whether the request is from venue provider
+        collection = User
+        request_url = request.url
+        if 'venue/provider/login' in str(request_url):
+            collection = VenueProvider
+
         # Check if the user exists and the provided password matches
-        user = User.find_one({"email": email})
+        user = collection.find_one({"email": email})
         if user:
             if bcrypt.checkpw(password.encode("utf-8"), user["password"]):
                 # Generate a JWT token
@@ -83,6 +104,14 @@ def login():
                     "user_id": str(user["_id"]),
                     "exp": datetime.datetime.utcnow() + JWT_EXPIRATION_DELTA,
                 }
+
+                if collection == VenueProvider:
+                    token_payload = {
+                        "user_id": str(user["_id"]),
+                        "verified": user["verified"],
+                        "exp": datetime.datetime.utcnow() + JWT_EXPIRATION_DELTA
+                    }
+
                 jwt_token = jwt.encode(token_payload, JWT_SECRET_KEY, algorithm="HS256")
 
                 return (
