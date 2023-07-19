@@ -89,42 +89,42 @@ def add_new_venue():
             500,
         )
 
-# # Update a venue
-# def update_venue(venue_id):
-#     try:
-#         data = request.json
-#         new_venue_name = data.get("venue_name")
-#         new_address = data.get("address")
-#         new_opening_time = data.get("opening_time")
-#         new_closing_time = data.get("closing_time")
+# Update a venue
+def update_venue(venue_id):
+    try:
+        data = request.json
+        new_venue_name = data.get("venue_name")
+        new_address = data.get("address")
+        new_opening_time = data.get("opening_time")
+        new_closing_time = data.get("closing_time")
 
-#         # Find the venue by its ID in the database
-#         venue = Venue.find_one({'_id': ObjectId(venue_id)})
+        # Find the venue by its ID in the database
+        venue = Venue.find_one({'_id': ObjectId(venue_id)})
 
-#         if not venue:
-#             return jsonify({'error': 'Venue not found'}), 404
+        if not venue:
+            return jsonify({'error': 'Venue not found'}), 404
 
-#         # Create a dictionary containing the updated fields
-#         updated_fields = {}
-#         if new_venue_name:
-#             updated_fields['venue_name'] = new_venue_name
-#         if new_address:
-#             updated_fields['address'] = new_address
-#         if new_opening_time:
-#             updated_fields['opening_time'] = new_opening_time
-#         if new_closing_time:
-#             updated_fields['closing_time'] = new_closing_time
+        # Create a dictionary containing the updated fields
+        updated_fields = {}
+        if new_venue_name:
+            updated_fields['venue_name'] = new_venue_name
+        if new_address:
+            updated_fields['address'] = new_address
+        if new_opening_time:
+            updated_fields['opening_time'] = new_opening_time
+        if new_closing_time:
+            updated_fields['closing_time'] = new_closing_time
 
-#         # Update the venue with the new details
-#         Venue.update_one({'_id': ObjectId(venue_id)}, {'$set': updated_fields})
+        # Update the venue with the new details
+        Venue.update_one({'_id': ObjectId(venue_id)}, {'$set': updated_fields})
 
-#         return jsonify({"OK": True, "message": "Venue updated successfully"}), 200
+        return jsonify({"OK": True, "message": "Venue updated successfully"}), 200
 
-#     except Exception as e:
-#         return (
-#             jsonify({"error": "An unexpected error occurred", "details": str(e)}),
-#             500,
-#         )
+    except Exception as e:
+        return (
+            jsonify({"error": "An unexpected error occurred", "details": str(e)}),
+            500,
+        )
 
 # # Remove a venue
 # def remove_venue(venue_id):
