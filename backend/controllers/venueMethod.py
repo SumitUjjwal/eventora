@@ -146,30 +146,30 @@ def remove_venue(venue_id):
             500,
         )
 
-# # Get venue
-# def get_venues_by_provider():
-    # try:
-    #     venue_provider_id = request.user_id
-    #     search_query = request.args.get('search')
-    #     filter_capacity = request.args.get('capacity')
+# Get venue
+def get_venues_by_provider():
+    try:
+        venue_provider_id = request.user_id
+        search_query = request.args.get('search')
+        filter_capacity = request.args.get('capacity')
 
-    #     query = {'venue_provider': venue_provider_id}
+        query = {'venue_provider': venue_provider_id}
 
-    #     if search_query:
-    #         query['venue_name'] = {'$regex': search_query, '$options': 'i'}
+        if search_query:
+            query['venue_name'] = {'$regex': search_query, '$options': 'i'}
 
-    #     if filter_capacity:
-    #         query['capacity'] = int(filter_capacity)
+        if filter_capacity:
+            query['capacity'] = int(filter_capacity)
 
-    #     venues = list(Venue.find(query))
+        venues = list(Venue.find(query))
 
-    #     for venue in venues:
-    #         venue['_id'] = str(venue['_id'])
+        for venue in venues:
+            venue['_id'] = str(venue['_id'])
 
-    #     return jsonify(venues), 200
+        return jsonify(venues), 200
 
-    # except Exception as e:
-    #     return (
-    #         jsonify({"error": "An unexpected error occurred", "details": str(e)}),
-    #         500,
-    #     )
+    except Exception as e:
+        return (
+            jsonify({"error": "An unexpected error occurred", "details": str(e)}),
+            500,
+        )
