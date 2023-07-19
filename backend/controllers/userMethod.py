@@ -28,37 +28,37 @@ def get_events():
     # Convert the events data to a list of dictionaries and return as JSON
     return jsonify(events), 200
 
-# # Get list of Movies
-# def get_movies():
-#     # Get query parameters
-#     city = request.args.get('city')
-#     date = request.args.get('date')
-#     language = request.args.get('language')
-#     sort_order = request.args.get('sort')
-#     search_query = request.args.get('search')
+# Get list of Movies
+def get_movies():
+    # Get query parameters
+    city = request.args.get('city')
+    date = request.args.get('date')
+    language = request.args.get('language')
+    sort_order = request.args.get('sort')
+    search_query = request.args.get('search')
 
-#     # Construct the query based on the provided parameters
-#     query = {}
-#     if city:
-#         query['city'] = city
-#     if date:
-#         query['date'] = date
-#     if language:
-#         query['language'] = language
-#     if search_query:
-#         query['title'] = {'$regex': f'.*{search_query}.*', '$options': 'i'}    
+    # Construct the query based on the provided parameters
+    query = {}
+    if city:
+        query['city'] = city
+    if date:
+        query['date'] = date
+    if language:
+        query['language'] = language
+    if search_query:
+        query['title'] = {'$regex': f'.*{search_query}.*', '$options': 'i'}    
 
-#     # Fetch filtered movies from the 'movies' collection in MongoDB
-#     movies = list(Movie.find(query))
+    # Fetch filtered movies from the 'movies' collection in MongoDB
+    movies = list(Movie.find(query))
 
-#     # Sort movies based on release date
-#     if sort_order == 'asc':
-#         movies.sort(key=lambda movie: movie['release_date'])
-#     elif sort_order == 'desc':
-#         movies.sort(key=lambda movie: movie['release_date'], reverse=True)
+    # Sort movies based on release date
+    if sort_order == 'asc':
+        movies.sort(key=lambda movie: movie['release_date'])
+    elif sort_order == 'desc':
+        movies.sort(key=lambda movie: movie['release_date'], reverse=True)
 
-#     # Convert the movies data to a list of dictionaries and return as JSON
-#     return jsonify(movies), 200
+    # Convert the movies data to a list of dictionaries and return as JSON
+    return jsonify(movies), 200
 
 
 
