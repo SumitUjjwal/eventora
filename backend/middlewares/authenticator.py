@@ -27,6 +27,10 @@ def token_required(f):
             token_payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
             # Add the user_id to the request context for further use
             request.user_id = token_payload['user_id']
+            request_url = request.url
+            if 'venue/provider/' in str(request_url):
+                request.verified = token_payload['verified']
+                print(request.verified, "check verification")
         except jwt.ExpiredSignatureError:
             return jsonify({'error': 'Token has expired'}), 401
         except jwt.InvalidTokenError:
