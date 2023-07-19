@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from models.model import User, VenueProvider
+from models.model import User, VenueProvider, EventOrganizer
 from pymongo.errors import DuplicateKeyError
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -48,10 +48,18 @@ def signup():
                 "last_name": last_name,
                 "email": email,
                 "password": hashed_password,
-                "verified": False
+                "is_verified": False
             }
             collection = VenueProvider
-
+        elif 'event/organizer/signup' in request_url:
+            user_data = {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "password": hashed_password,
+                "is_verified": True
+            }
+            collection = EventOrganizer
 
         # Check if the email already exists
         if collection.find_one({"email": email}):
@@ -94,6 +102,8 @@ def login():
         request_url = request.url
         if 'venue/provider/login' in str(request_url):
             collection = VenueProvider
+        elif 'event/organizer/signup' in request_url:
+            collection = EventOrganizer
 
         # Check if the user exists and the provided password matches
         user = collection.find_one({"email": email})
@@ -108,10 +118,15 @@ def login():
                 if collection == VenueProvider:
                     token_payload = {
                         "user_id": str(user["_id"]),
-                        "verified": user["verified"],
+                        "is_verified": user["is_verified"],
                         "exp": datetime.datetime.utcnow() + JWT_EXPIRATION_DELTA
                     }
-
+                elif collection == EventOrganizer:
+                    token_payload = {
+                        "user_id": str(user["_id"]),
+                        "is_verified": user["is_verified"],
+                        "exp": datetime.datetime.utcnow() + JWT_EXPIRATION_DELTA
+                    }
                 jwt_token = jwt.encode(token_payload, JWT_SECRET_KEY, algorithm="HS256")
 
                 return (
