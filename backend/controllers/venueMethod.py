@@ -47,6 +47,8 @@ def add_new_venue():
         data = request.json
         venue_name = data.get("venue_name")
         address = data.get("address")
+        city = data.get("city")
+        state = data.get("state")
         opening_time = data.get("opening_time")
         closing_time = data.get("closing_time")
         venue_provider = request.user_id
@@ -55,6 +57,8 @@ def add_new_venue():
         venue_data = {
             'venue_name': venue_name,
             'address': address,
+            'city': city,
+            'state': state,
             'opening_time': opening_time,
             'closing_time': closing_time,
             'venue_provider': venue_provider,
@@ -95,6 +99,8 @@ def update_venue(venue_id):
         data = request.json
         new_venue_name = data.get("venue_name")
         new_address = data.get("address")
+        new_city = data.get("city")
+        new_state = data.get("state")
         new_opening_time = data.get("opening_time")
         new_closing_time = data.get("closing_time")
 
@@ -110,6 +116,10 @@ def update_venue(venue_id):
             updated_fields['venue_name'] = new_venue_name
         if new_address:
             updated_fields['address'] = new_address
+        if new_city:
+            updated_fields['city'] = new_city
+        if new_state:
+            updated_fields['state'] = new_state        
         if new_opening_time:
             updated_fields['opening_time'] = new_opening_time
         if new_closing_time:
@@ -152,6 +162,8 @@ def get_venues_by_provider():
         venue_provider_id = request.user_id
         search_query = request.args.get('search')
         filter_capacity = request.args.get('capacity')
+        filter_city = request.args.get('city')
+        filter_state = request.args.get('state')
 
         query = {'venue_provider': venue_provider_id}
 
@@ -160,6 +172,10 @@ def get_venues_by_provider():
 
         if filter_capacity:
             query['capacity'] = int(filter_capacity)
+        if filter_city:
+            query['city'] = int(filter_city)
+        if filter_state:
+            query['state'] = int(filter_state)        
 
         venues = list(Venue.find(query))
 
@@ -173,3 +189,4 @@ def get_venues_by_provider():
             jsonify({"error": "An unexpected error occurred", "details": str(e)}),
             500,
         )
+    
