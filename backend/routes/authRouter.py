@@ -21,3 +21,12 @@ def venue_provider_login_route():
 @auth.route('/venue/provider/signup', methods=['POST'])
 def venue_provider_signup_route():
     return signup()
+
+# Event Organizer Authentication
+@auth.route('/event/organizer/login', methods=['POST'])
+def event_organizer_login_route():
+    return login()
+
+@auth.route('/event/organizer/signup', methods=['POST'])
+def event_organizer_signup_route():
+    return signup()
