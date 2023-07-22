@@ -63,30 +63,30 @@ def get_movies():
 
 
 # # ******************************ON HOLD**********************************
-# def initialize_seats():
-#     # Initialize the seat matrix and store it in the database
-#     seat_matrix = initialize_seat_matrix()
-#     Seat.insert_many([{"row": i, "seats": row} for i, row in enumerate(seat_matrix)])
+def initialize_seats():
+    # Initialize the seat matrix and store it in the database
+    seat_matrix = initialize_seat_matrix()
+    Seat.insert_many([{"row": i, "seats": row} for i, row in enumerate(seat_matrix)])
 
-#     return jsonify({"message": "Seat matrix initialized."}), 200
+    return jsonify({"message": "Seat matrix initialized."}), 200
 
-# def book_seat():
-#     data = request.get_json()
-#     row = data.get('row')
-#     column = data.get('column')
+def book_seat():
+    data = request.get_json()
+    row = data.get('row')
+    column = data.get('column')
 
-#     # Check if the seat is available (0) in the database
-#     seat_status = Seat.find_one({"row": row})['seats'][column]
-#     if seat_status != 0:
-#         return jsonify({"message": "Seat is not available."}), 400
+    # Check if the seat is available (0) in the database
+    seat_status = Seat.find_one({"row": row})['seats'][column]
+    if seat_status != 0:
+        return jsonify({"message": "Seat is not available."}), 400
 
-#     # Update the seat status to booked (1) in the database
-#     update_seat_status(row, column, 1)
-#     return jsonify({"message": "Seat booked successfully."}), 200
+    # Update the seat status to booked (1) in the database
+    update_seat_status(row, column, 1)
+    return jsonify({"message": "Seat booked successfully."}), 200
 
-# def get_seats():
-#     # Fetch the seat matrix status from the database
-#     seat_matrix = list(Seat.find({}, {"_id": 0}))
+def get_seats():
+    # Fetch the seat matrix status from the database
+    seat_matrix = list(Seat.find({}, {"_id": 0}))
 
-#     return jsonify({"seats": seat_matrix}), 200
+    return jsonify({"seats": seat_matrix}), 200
 # # ******************************ON HOLD**********************************
