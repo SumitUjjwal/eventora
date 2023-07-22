@@ -29,8 +29,7 @@ def token_required(f):
             request.user_id = token_payload['user_id']
             request_url = request.url
             if 'venue/provider/' in str(request_url):
-                request.verified = token_payload['verified']
-                print(request.verified, "check verification")
+                request.is_verified = token_payload['is_verified']
         except jwt.ExpiredSignatureError:
             return jsonify({'error': 'Token has expired'}), 401
         except jwt.InvalidTokenError:
