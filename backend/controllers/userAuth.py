@@ -57,7 +57,7 @@ def signup():
                 "last_name": last_name,
                 "email": email,
                 "password": hashed_password,
-                "is_verified": True
+                "is_verified": False
             }
             collection = EventOrganizer
 
